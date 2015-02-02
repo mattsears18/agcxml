@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by using XMLSpy v2008 sp2 (http://www.altova.com) by Yimin Zhu -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cos="http://www.aecXML.org/aecXML/cos" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:agcrfi="http://www.aecXML.org/agcXML/RequestForInformation" targetNamespace="http://www.aecXML.org/agcXML/RequestForInformation" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--request for Information diagram-->
+	<xs:element name="RequestForInformation" type="agcrfi:RequestForInformation" nillable="false">
+		<xs:annotation>
+			<xs:documentation>Root element for the XML exchange document for AGC Request for 
+Information</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="RequestForInformation">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recipient">
+						<xs:complexType>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ListName" type="xs:string" minOccurs="0"/>
+								<xs:choice minOccurs="0" maxOccurs="unbounded">
+									<xs:element ref="agcxml:Organization"/>
+								</xs:choice>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Owner" minOccurs="0">
+						<xs:complexType>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Project" type="agcxml:Project" minOccurs="0"/>
+					<xs:element name="Title" type="xs:string" minOccurs="0"/>
+					<xs:element name="IssueDate" type="xs:date"/>
+					<xs:element name="DocumentNumber" type="xs:string"/>
+					<xs:element name="Issue" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Question" type="xs:string"/>
+								<xs:element name="RequestedReplyDate" type="xs:date" minOccurs="0"/>
+								<xs:element name="ReferenceDocument" type="agcxml:AttachmentList" minOccurs="0"/>
+								<xs:element name="RecommendedSolution" type="xs:string" minOccurs="0"/>
+								<xs:element name="CostImpact" type="xs:string" minOccurs="0"/>
+								<xs:element name="ScheduleImpact" type="xs:string" minOccurs="0"/>
+								<xs:element name="Reply" type="xs:string" minOccurs="0"/>
+								<xs:element name="ReplyDate" type="xs:date" minOccurs="0"/>
+								<xs:element name="ReplyAttachment" type="agcxml:AttachmentList" minOccurs="0"/>
+								<xs:element name="Status" type="xs:string" minOccurs="0"/>
+								<xs:element name="Discipline" type="xs:string" minOccurs="0"/>
+								<xs:element name="SpecificationSection" type="xs:string" minOccurs="0"/>
+								<xs:element name="Category" type="xs:string" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

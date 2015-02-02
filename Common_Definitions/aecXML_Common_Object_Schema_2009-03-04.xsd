@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2009 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cos="http://www.aecXML.org/aecXML/cos" targetNamespace="http://www.aecXML.org/aecXML/cos" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!--Main elements-->
+	<xs:element name="Root" type="cos:Root" abstract="true"/>
+	<xs:complexType name="Root">
+		<xs:attribute name="id" type="xs:ID" use="optional">
+			<xs:annotation>
+				<xs:documentation>Internal id for id/idref purpose inside the XML document, it does not yield any other meaning.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ref" type="xs:IDREF" use="optional">
+			<xs:annotation>
+				<xs:documentation>Reference to the internal reference id for id/idref purpose inside the XML document, it does not yield any other meaning.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="urn" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>Uniform Resource Name for the element instance. The recommended format is urn:uuid:"128 bit guid". It is then compatible with the GUID format of IFC.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="href" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>Reference to an external reference id (often a composite of document id and internal id of object in document.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="DocumentInformation" type="cos:DocumentInformation" abstract="true"/>
+	<xs:complexType name="DocumentInformation">
+		<xs:annotation>
+			<xs:documentation>Common definition of all document elements, defining the common attributes and elements for a document, a document template and a document reference.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E): Title: Clear text description(s) of the content of the document. Term "Name" used in accordance to IFC naming convention. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Description" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E): Summary: Only needed when additional content information is considered essential for search purposes. Term "Description" used in accordance to IFC naming convention.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="documentId" type="xs:normalizedString" use="optional">
+					<xs:annotation>
+						<xs:documentation>ISO-IEC_82045-5_(E): A designation that is issued by the organization where the document is created. Mandatory for all documents that shall be assigned a document number, e.g. a drawing. Other documents are identified by their title. Must be unique within the specified document management domain.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="versionId" type="xs:normalizedString" use="optional">
+					<xs:annotation>
+						<xs:documentation>ISO-IEC_82045-5_(E): System counter that distinguishes every stored version from other versions. Shall be independent of revision ID and status of the document.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="revisionId" type="xs:normalizedString">
+					<xs:annotation>
+						<xs:documentation>ISO-IEC_82045-5_(E): Mandatory for all documents that are formally revised and approved. </xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="language" type="xs:language" use="optional" default="en-us">
+					<xs:annotation>
+						<xs:documentation>ISO-IEC_82045-5_(E): Codes according to ISO 639,  if not provided, it defaults to en-us. </xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Document" type="cos:Document" abstract="true" substitutionGroup="cos:DocumentInformation" nillable="true"/>
+	<xs:complexType name="Document">
+		<xs:annotation>
+			<xs:documentation>Document information including metadata about the document transaction. Definion based on IfcDocumentInformation with additional metadata as defined in ISO-IEC_82045-5_(E)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentInformation">
+				<xs:sequence>
+					<xs:element name="Status" type="xs:normalizedString" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E): Status related to activities concerning the document; checking, commenting and approval. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PreparationDate" type="xs:dateTime" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E):  Preparation date for each document version (and revision).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GoverningForm" type="cos:DocumentTemplate" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Name of the template used for the transaction. The template normally defines the boiler plate text that is not included in the transaction message. Examples are AGCDocument293, or AIADocumentG703. The Name and Edition need to be agreed upon.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentReference" type="cos:DocumentReference" abstract="true" substitutionGroup="cos:DocumentInformation" nillable="true"/>
+	<xs:complexType name="DocumentReference">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentInformation">
+				<xs:sequence>
+					<xs:element name="Status" type="xs:normalizedString" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E): Status related to activities concerning the document; checking, commenting and approval. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PreparationDate" type="xs:dateTime" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ISO-IEC_82045-5_(E):  Preparation date for each document version (and revision).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentTemplate" type="cos:DocumentTemplate" abstract="true" substitutionGroup="cos:DocumentInformation" nillable="true"/>
+	<xs:complexType name="DocumentTemplate">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentInformation">
+				<xs:sequence>
+					<xs:element name="Edition" type="xs:normalizedString" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Edition of the document, often provided in addition to the Name to uniquly identify the document.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Transaction history diagram-->
+	<xs:element name="Transaction" type="cos:Transaction" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Transaction">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="TransactionDate" type="xs:dateTime"/>
+					<xs:element name="TransactingPerson" type="cos:Person"/>
+					<xs:element name="TransactingOrganization" type="cos:Organization"/>
+					<xs:element name="TransactingApplication" type="cos:Application" minOccurs="0"/>
+					<xs:element name="ChangeAction" type="cos:ChangeActionEnum" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Application">
+		<xs:sequence>
+			<xs:element name="ApplicationName" type="xs:normalizedString"/>
+			<xs:element name="ApplicationVersion" type="xs:normalizedString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ChangeActionEnum">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Nochange"/>
+			<xs:enumeration value="Modified"/>
+			<xs:enumeration value="Added"/>
+			<xs:enumeration value="Deleted"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Project, Process and Schedule diagram-->
+	<xs:element name="Project" type="cos:Project" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Project">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="ProjectId" type="xs:normalizedString">
+						<xs:annotation>
+							<xs:documentation>Project number or designation, assigned within an organization, usually the company where the document was created. Additional project ID's can be set, distinguished by the domain attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Name" type="xs:normalizedString">
+						<xs:annotation>
+							<xs:documentation>Clear text, shared by all actors in the project.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Description" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Additional descriptive text that provided further information about the project.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Process" type="cos:Process" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Process">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+					<xs:element name="WBS" type="xs:normalizedString" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Schedule" type="cos:Schedule" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Schedule">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Task" type="cos:Task" substitutionGroup="cos:Process" nillable="true"/>
+	<xs:complexType name="Task">
+		<xs:complexContent>
+			<xs:extension base="cos:Process">
+				<xs:sequence>
+					<xs:element name="StartDate" type="xs:date"/>
+					<xs:element name="CompletionDate" type="xs:date"/>
+					<xs:element name="Deadline" type="xs:date" minOccurs="0"/>
+					<xs:element name="Completion" type="cos:normalizedRatioMeasure" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Person, Organization and Address diagram-->
+	<xs:element name="Organization" type="cos:Organization" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Organization">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+					<xs:element name="PostalAddress" type="cos:PostalAddress" minOccurs="0"/>
+					<xs:element name="TelecomAddress" type="cos:TelecomAddress" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Person" type="cos:Person" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Person">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="FamilyName" type="xs:normalizedString"/>
+					<xs:element name="GivenName" type="xs:normalizedString"/>
+					<xs:element name="MiddleNames" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="PrefixTitles" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="SuffixTitles" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="PostalAddress" type="cos:PostalAddress" minOccurs="0"/>
+					<xs:element name="TelecomAddress" type="cos:TelecomAddress" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Address" type="cos:Address" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Address">
+		<xs:complexContent>
+			<xs:extension base="cos:Root"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PostalAddress" type="cos:PostalAddress" substitutionGroup="cos:Address" nillable="true"/>
+	<xs:complexType name="PostalAddress">
+		<xs:complexContent>
+			<xs:extension base="cos:Address">
+				<xs:sequence>
+					<xs:element name="AddressLine1" type="xs:normalizedString"/>
+					<xs:element name="AddressLine2" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="Town" type="xs:normalizedString"/>
+					<xs:element name="Region" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="PostalCode" type="xs:normalizedString"/>
+					<xs:element name="Country" type="xs:normalizedString" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TelecomAddress" type="cos:TelecomAddress" substitutionGroup="cos:Address" nillable="true"/>
+	<xs:complexType name="TelecomAddress">
+		<xs:complexContent>
+			<xs:extension base="cos:Address">
+				<xs:sequence>
+					<xs:element name="Telephone" type="xs:normalizedString"/>
+					<xs:element name="Facsimile" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="Email" type="xs:normalizedString" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Budget and cost item diagram-->
+	<xs:element name="Budget" type="cos:Budget" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Budget">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+					<xs:element name="Items" type="cos:CostItem" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="Alternates" type="cos:CostAlternate" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="DamagesOrBonuses" type="cos:CostProvision" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CostItem" type="cos:CostItem" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="CostItem">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="LineNumber" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CostAlternate" type="cos:CostAlternate" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="CostAlternate">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+					<xs:element name="Items" type="cos:CostItem" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CostProvision" type="cos:CostProvision" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="CostProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Provision information diagram-->
+	<xs:element name="Provision" type="cos:Provision" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Provision">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Insurance" type="cos:Insurance" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Insurance">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Payment" type="cos:Payment" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Payment">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ChangeOrder" type="cos:ChangeOrder" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="ChangeOrder">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WorkItem" type="cos:WorkItem" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="WorkItem">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="currency" type="xs:normalizedString" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Term" type="cos:Term" abstract="true" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Term">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:normalizedString"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="language" type="xs:language" use="optional" default="en-us"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Data type diagram-->
+	<xs:simpleType name="GUID">
+		<xs:restriction base="xs:normalizedString"/>
+	</xs:simpleType>
+	<xs:simpleType name="ratioMeasure">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0."/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="normalizedRatioMeasure">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0."/>
+			<xs:maxInclusive value="1."/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="monetaryAmount">
+		<xs:restriction base="xs:float"/>
+	</xs:simpleType>
+</xs:schema>

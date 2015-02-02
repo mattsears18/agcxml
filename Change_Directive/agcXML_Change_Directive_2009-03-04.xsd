@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2007 sp2 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cos="http://www.aecXML.org/aecXML/cos" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:agcchd="http://www.aecXML.org/agcXML/ChangeDirective" targetNamespace="http://www.aecXML.org/agcXML/ChangeDirective" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--change directive diagram-->
+	<xs:element name="ChangeDirective" type="agcchd:ChangeDirective" substitutionGroup="agcxml:DocumentTransaction" nillable="false">
+		<xs:annotation>
+			<xs:documentation>Root element for the XML exchange document for AGC construction change directives</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ChangeDirective">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="AgreementDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:group ref="agcchd:SenderChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Receiver">
+						<xs:complexType>
+							<xs:group ref="agcchd:ReceiverChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee">
+						<xs:complexType>
+							<xs:choice>
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Project" type="agcxml:Project"/>
+					<xs:element name="ContractAdjustment" type="agcxml:ContractAdjustment"/>
+					<xs:element name="ChangeSchedule" type="agcxml:ProjectScheduleChange"/>
+					<xs:element name="Attachments" type="agcxml:AttachmentList" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--ChangeDirective actor diagram - Group definition for choice of client, applicant, and advisor-->
+	<xs:group name="SenderChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Architect"/>
+			<xs:element ref="agcxml:ConstructionManagerAdvisor"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="ReceiverChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Owner"/>
+			<xs:element ref="agcxml:Contractor"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

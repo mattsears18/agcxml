@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2007 sp2 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cos="http://www.aecXML.org/aecXML/cos" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:agcbnd="http://www.aecXML.org/agcXML/Bond" targetNamespace="http://www.aecXML.org/agcXML/Bond" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--bond diagram-->
+	<xs:element name="Bond" type="agcbnd:Bond" substitutionGroup="agcxml:DocumentTransaction" nillable="false">
+		<xs:annotation>
+			<xs:documentation>Root element for the XML exchange document for AGC bonds</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Bond">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="Bondtype" type="agcbnd:BondType"/>
+					<xs:element name="BondDate" type="xs:date"/>
+					<xs:element name="PeriodStartDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:group ref="agcbnd:SenderChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recipient">
+						<xs:complexType>
+							<xs:group ref="agcbnd:RecipientChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee">
+						<xs:complexType>
+							<xs:choice>
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>					</xs:element>
+					<xs:element name="Project" type="agcxml:Project"/>
+					<xs:element name="ProjectSum" type="agcxml:LumpSum"/>
+					<xs:element name="BondSum" type="agcxml:BondSum"/>
+					<xs:element name="Attachments" type="agcxml:AttachmentList" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--bond actor diagram - Group definition for choice of sender, recipient, and notifiee-->
+	<xs:group name="SenderChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Architect"/>
+			<xs:element ref="agcxml:ConstructionManagerAdvisor"/>
+			<xs:element ref="agcxml:Surety"/>
+			<xs:element ref="agcxml:Contractor"/>
+			<xs:element ref="agcxml:Subcontractor"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="RecipientChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Architect"/>
+			<xs:element ref="agcxml:ConstructionManagerAdvisor"/>
+			<xs:element ref="agcxml:Surety"/>
+			<xs:element ref="agcxml:Contractor"/>
+			<xs:element ref="agcxml:Subcontractor"/>
+		</xs:choice>
+	</xs:group>
+	<!--Enumeration and type definition diagram-->
+	<xs:simpleType name="BondType">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="BidBond"/>
+			<xs:enumeration value="PaymentBond"/>
+			<xs:enumeration value="PerformanceBond"/>
+			<xs:enumeration value="Warranty"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

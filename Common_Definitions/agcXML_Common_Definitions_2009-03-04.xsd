@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2009 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:cos="http://www.aecXML.org/aecXML/cos" targetNamespace="http://www.aecXML.org/agcXML/agcXMLCommon" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<!--Document transaction diagram-->
+	<xs:element name="DocumentTransaction" type="agcxml:DocumentTransaction" substitutionGroup="cos:Document" nillable="false"/>
+	<xs:complexType name="DocumentTransaction">
+		<xs:complexContent>
+			<xs:extension base="cos:Document">
+				<xs:sequence>
+					<xs:element name="Transaction" type="cos:Transaction"/>
+					<xs:element name="LastTransactions" type="agcxml:DocumentTransactionReference" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentTransactionReference" type="agcxml:DocumentTransactionReference" substitutionGroup="cos:DocumentReference" nillable="false"/>
+	<xs:complexType name="DocumentTransactionReference">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentReference">
+				<xs:sequence>
+					<xs:element name="Transaction" type="cos:Transaction"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Project and schedule diagram-->
+	<xs:element name="Project" type="agcxml:Project" substitutionGroup="cos:Project" nillable="true"/>
+	<xs:complexType name="Project">
+		<xs:complexContent>
+			<xs:extension base="cos:Project">
+				<xs:sequence>
+					<xs:element name="ContractDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="ContractType" type="xs:string" minOccurs="0"/>
+					<xs:element name="Address" type="cos:PostalAddress" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ProjectSchedule" type="agcxml:ProjectSchedule" substitutionGroup="cos:Schedule" nillable="true"/>
+	<xs:complexType name="ProjectSchedule">
+		<xs:complexContent>
+			<xs:extension base="cos:Schedule">
+				<xs:sequence>
+					<xs:element name="ProjectStartDate" type="xs:date"/>
+					<xs:element name="SubstantialCompletionDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="FinalCompletionDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="WorkTasks" type="cos:Process" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ProjectScheduleChange" type="agcxml:ProjectScheduleChange" substitutionGroup="cos:Schedule" nillable="true"/>
+	<xs:complexType name="ProjectScheduleChange">
+		<xs:complexContent>
+			<xs:extension base="cos:Schedule">
+				<xs:sequence>
+					<xs:element name="ScheduleChange" type="xs:duration"/>
+					<xs:element name="NewSubstantialCompletionDate" type="xs:date"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Person, organization and representative diagram-->
+	<xs:element name="Organization" type="agcxml:Organization" substitutionGroup="cos:Organization" nillable="true"/>
+	<xs:complexType name="Organization">
+		<xs:complexContent>
+			<xs:extension base="cos:Organization">
+				<xs:sequence>
+					<xs:element name="Role" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="ProjectNumber" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="FederalTaxId" type="xs:normalizedString" nillable="false" minOccurs="0"/>
+					<xs:element name="License" type="agcxml:License" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Person">
+		<xs:complexContent>
+			<xs:extension base="cos:Person">
+				<xs:sequence>
+					<xs:element name="RepresentativeTitle" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="Signature" type="agcxml:Signature" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Owner" type="agcxml:Owner" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Owner">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:OwnerRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Architect" type="agcxml:Architect" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Architect">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:ArchitectRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Engineer" type="agcxml:Engineer" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Engineer">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:EngineerRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Contractor" type="agcxml:Contractor" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Contractor">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:ContractorRepresentative" minOccurs="0"/>
+					<xs:element name="SafetyRepresentative" type="agcxml:ContractorSafetyRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Subcontractor" type="agcxml:Subcontractor" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Subcontractor">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:SubcontractorRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ConstructionManagerAdvisor" type="agcxml:ConstructionManagerAdvisor" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="ConstructionManagerAdvisor">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:ConstructionManagerAdvisorRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ConstructionManagerConstructor" type="agcxml:ConstructionManagerConstructor" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="ConstructionManagerConstructor">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:ConstructionManagerConstructorRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Surety" type="agcxml:Surety" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Surety">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:SuretyRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Broker" type="agcxml:Broker" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Broker">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:BrokerRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Notary" type="agcxml:Notary" substitutionGroup="agcxml:Organization" nillable="true"/>
+	<xs:complexType name="Notary">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Organization">
+				<xs:sequence>
+					<xs:element name="Representative" type="agcxml:NotaryRepresentative" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OwnerRepresentative" type="agcxml:OwnerRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="OwnerRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ArchitectRepresentative" type="agcxml:ArchitectRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="ArchitectRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EngineerRepresentative" type="agcxml:EngineerRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="EngineerRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractorRepresentative" type="agcxml:ContractorRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="ContractorRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractorSafetyRepresentative" type="agcxml:ContractorSafetyRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="ContractorSafetyRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SubcontractorRepresentative" type="agcxml:SubcontractorRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="SubcontractorRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ConstructionManagerAdvisorRepresentative" type="agcxml:ConstructionManagerAdvisorRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="ConstructionManagerAdvisorRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ConstructionManagerConstructorRepresentative" type="agcxml:ConstructionManagerConstructorRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="ConstructionManagerConstructorRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SuretyRepresentative" type="agcxml:SuretyRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="SuretyRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BrokerRepresentative" type="agcxml:BrokerRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="BrokerRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NotaryRepresentative" type="agcxml:NotaryRepresentative" substitutionGroup="agcxml:Person" nillable="true"/>
+	<xs:complexType name="NotaryRepresentative">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Person"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Person" type="agcxml:Person" substitutionGroup="cos:Person" nillable="true"/>
+	<!--Bugdet item diagram-->
+	<xs:element name="BudgetByContractorFee" type="agcxml:BudgetByContractorFee" substitutionGroup="cos:Budget" nillable="true"/>
+	<xs:complexType name="BudgetByContractorFee">
+		<xs:complexContent>
+			<xs:extension base="cos:Budget">
+				<xs:sequence>
+					<xs:element name="TotalContractorFee" type="cos:monetaryAmount"/>
+					<xs:element name="AdjustmentTerms" type="xs:string" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BudgetByGuaranteedMax" type="agcxml:BudgetByGuaranteedMax" substitutionGroup="cos:Budget" nillable="true"/>
+	<xs:complexType name="BudgetByGuaranteedMax">
+		<xs:complexContent>
+			<xs:extension base="cos:Budget">
+				<xs:sequence>
+					<xs:element name="MaxPrice" type="cos:monetaryAmount"/>
+					<xs:element name="MaxPriceSavingtTerms" type="xs:string" maxOccurs="unbounded"/>
+					<xs:element name="MaxPriceSavingtAssumptions" type="xs:string" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BudgetByLumpSum" type="agcxml:BudgetByLumpSum" substitutionGroup="cos:Budget" nillable="true"/>
+	<xs:complexType name="BudgetByLumpSum">
+		<xs:complexContent>
+			<xs:extension base="cos:Budget">
+				<xs:sequence>
+					<xs:element name="LumpSum" type="cos:monetaryAmount"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DamageProvision" type="agcxml:DamageProvision" substitutionGroup="cos:CostProvision" nillable="true"/>
+	<xs:complexType name="DamageProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:CostProvision">
+				<xs:sequence>
+					<xs:element name="DamageFine" type="cos:monetaryAmount"/>
+					<xs:element name="DamageFineBasis" type="xs:normalizedString"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BonusProvision" type="agcxml:BonusProvision" substitutionGroup="cos:CostProvision" nillable="true"/>
+	<xs:complexType name="BonusProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:CostProvision">
+				<xs:sequence>
+					<xs:element name="BonusFee" type="cos:monetaryAmount"/>
+					<xs:element name="BonusFeeBasis" type="xs:normalizedString"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AcceptedAlternate" type="agcxml:AcceptedAlternate" substitutionGroup="cos:CostAlternate" nillable="true"/>
+	<xs:complexType name="AcceptedAlternate">
+		<xs:complexContent>
+			<xs:extension base="cos:CostAlternate">
+				<xs:sequence>
+					<xs:element name="AcceptedSum" type="cos:monetaryAmount" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ProposedAlternate" type="agcxml:ProposedAlternate" substitutionGroup="cos:CostAlternate" nillable="true"/>
+	<xs:complexType name="ProposedAlternate">
+		<xs:complexContent>
+			<xs:extension base="cos:CostAlternate">
+				<xs:sequence>
+					<xs:element name="ProposedSum" type="cos:monetaryAmount" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OutstandingAlternate" type="agcxml:OutstandingAlternate" substitutionGroup="cos:CostAlternate" nillable="true"/>
+	<xs:complexType name="OutstandingAlternate">
+		<xs:complexContent>
+			<xs:extension base="cos:CostAlternate">
+				<xs:sequence>
+					<xs:element name="OutstandingSum" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="ExpirationDate" type="xs:date"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Cost item diagram-->
+	<xs:element name="Allowance" type="agcxml:Allowance" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="Allowance">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="AllowanceSum" type="cos:monetaryAmount"/>
+					<xs:element name="Usage" type="agcxml:AllowanceUsage"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Compensation" type="agcxml:Compensation" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="Compensation">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="CompensationSum" type="cos:monetaryAmount"/>
+					<xs:element name="Usage" type="agcxml:CompensationUsage"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmployeeRate" type="agcxml:EmployeeRate" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="EmployeeRate">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="EmployeeStatus" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="EmployeeFunctionTitle" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="EmployeeRate" type="cos:monetaryAmount"/>
+					<xs:element name="RateTimeUnit" type="xs:normalizedString"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LumpSum" type="agcxml:LumpSum" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="LumpSum">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="LumpSum" type="cos:monetaryAmount"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BondSum" type="agcxml:BondSum" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="BondSum">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="BondSum" type="cos:monetaryAmount"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="UnitPrice" type="agcxml:UnitPrice" substitutionGroup="cos:CostItem" nillable="true"/>
+	<xs:complexType name="UnitPrice">
+		<xs:complexContent>
+			<xs:extension base="cos:CostItem">
+				<xs:sequence>
+					<xs:element name="UnitCount" type="xs:unsignedShort" minOccurs="0"/>
+					<xs:element name="UnitCost" type="cos:monetaryAmount"/>
+					<xs:element name="UnitCostBasis" type="xs:normalizedString" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="UnitPriceUsage" type="agcxml:UnitPriceUsage" substitutionGroup="agcxml:UnitPrice" nillable="true"/>
+	<xs:complexType name="UnitPriceUsage">
+		<xs:complexContent>
+			<xs:extension base="agcxml:UnitPrice">
+				<xs:sequence>
+					<xs:element name="Usage" type="agcxml:CostItemUsage"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractAdjustment" type="agcxml:ContractAdjustment" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="ContractAdjustment">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="LumpSumAdjustment" type="agcxml:LumpSum" minOccurs="0"/>
+					<xs:element name="UnitPrice" type="agcxml:UnitPrice" minOccurs="0"/>
+					<xs:element name="OtherAdjustment" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Change order diagram-->
+	<xs:element name="ChangeOrderSummary" type="agcxml:ChangeOrderSummary" substitutionGroup="cos:ChangeOrder" nillable="true"/>
+	<xs:complexType name="ChangeOrderSummary">
+		<xs:complexContent>
+			<xs:extension base="cos:ChangeOrder">
+				<xs:sequence>
+					<xs:element name="TotalAddition" type="cos:monetaryAmount"/>
+					<xs:element name="TotalDeduction" type="cos:monetaryAmount"/>
+					<xs:element name="TotalAdditionPreviously" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="TotalDeductionPreviously" type="cos:monetaryAmount" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ChangeOrderSingle" type="agcxml:ChangeOrderSingle" substitutionGroup="cos:ChangeOrder" nillable="true"/>
+	<xs:complexType name="ChangeOrderSingle">
+		<xs:complexContent>
+			<xs:extension base="cos:ChangeOrder">
+				<xs:sequence>
+					<xs:element name="ContractSumOriginal" type="cos:monetaryAmount"/>
+					<xs:element name="NetChangePreviously" type="cos:monetaryAmount"/>
+					<xs:element name="ContractSumPreviously" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="NetChangeCurrent" type="cos:monetaryAmount"/>
+					<xs:element name="ContractSumCurrent" type="cos:monetaryAmount" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Document reference diagram-->
+	<xs:element name="Attachment" type="agcxml:Attachment" substitutionGroup="cos:DocumentReference" nillable="true"/>
+	<xs:complexType name="Attachment">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentReference">
+				<xs:sequence>
+					<xs:element name="Content" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentSubmittal" type="agcxml:DocumentSubmittal" substitutionGroup="cos:DocumentReference" nillable="true"/>
+	<xs:complexType name="DocumentSubmittal">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentReference">
+				<xs:sequence>
+					<xs:element name="Discipline" type="xs:string" minOccurs="0"/>
+					<xs:element name="Category" type="xs:string" minOccurs="0"/>
+					<xs:element name="SpecSection" type="xs:string" minOccurs="0"/>
+					<xs:element name="DrawingNumber" type="xs:string" minOccurs="0"/>
+					<xs:element name="Type" type="xs:string" minOccurs="0"/>
+					<xs:element name="DateReceived" type="xs:date" minOccurs="0"/>
+					<xs:element name="DateSent" type="xs:date" minOccurs="0"/>
+					<xs:element name="DateReturned" type="xs:date" minOccurs="0"/>
+					<xs:element name="DateForwarded" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractDocument" type="agcxml:ContractDocument" substitutionGroup="cos:DocumentReference" nillable="true"/>
+	<xs:complexType name="ContractDocument">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentReference">
+				<xs:sequence>
+					<xs:element name="Usage" type="agcxml:ContractDocumentUsage"/>
+					<xs:element name="NumberOfPages" type="xs:unsignedShort" minOccurs="0"/>
+					<xs:element name="Sections" type="agcxml:ContractDocument" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Exhibit" type="agcxml:Exhibit" substitutionGroup="cos:DocumentReference" nillable="true"/>
+	<xs:complexType name="Exhibit">
+		<xs:complexContent>
+			<xs:extension base="cos:DocumentReference">
+				<xs:sequence>
+					<xs:element name="Usage" type="agcxml:ExhibitUsage"/>
+					<xs:element name="NumberOfPages" type="xs:unsignedShort" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AttachmentList" type="agcxml:AttachmentList" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="AttachmentList">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Attachments" type="agcxml:Attachment" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentSubmittalList" type="agcxml:DocumentSubmittalList" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="DocumentSubmittalList">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Documents" type="agcxml:DocumentSubmittal" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractDocumentList" type="agcxml:ContractDocumentList" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="ContractDocumentList">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Documents" type="agcxml:ContractDocument" maxOccurs="unbounded"/>
+					<xs:element name="NumberOfCopies" type="xs:unsignedShort" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ExhibitList" type="agcxml:ExhibitList" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="ExhibitList">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Exhibits" type="agcxml:Exhibit" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Instruction diagram-->
+	<xs:element name="Instruction" type="agcxml:Instruction" substitutionGroup="cos:Term" nillable="true"/>
+	<xs:complexType name="Instruction">
+		<xs:complexContent>
+			<xs:extension base="cos:Term">
+				<xs:sequence>
+					<xs:element name="Paragraphs" type="xs:string" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="InstructionList" type="agcxml:InstructionList" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="InstructionList">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Instruction" type="agcxml:Exhibit" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Payment provision diagram-->
+	<xs:element name="PaymentProvision" type="agcxml:PaymentProvision" substitutionGroup="cos:Provision" nillable="true"/>
+	<xs:complexType name="PaymentProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:Provision">
+				<xs:sequence>
+					<xs:element name="Application" type="agcxml:PaymentApplication"/>
+					<xs:element name="Deadline" type="agcxml:PaymentDeadline" minOccurs="0"/>
+					<xs:element name="Retainage" type="agcxml:PaymentRetainage" minOccurs="0"/>
+					<xs:element name="UnpaidInterest" type="agcxml:PaymentInterestRate" minOccurs="0"/>
+					<xs:element name="FinalPaymentDate" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentApplication" type="agcxml:PaymentApplication" abstract="true" substitutionGroup="cos:Payment" nillable="true"/>
+	<xs:complexType name="PaymentApplication">
+		<xs:complexContent>
+			<xs:extension base="cos:Payment">
+				<xs:sequence>
+					<xs:element name="PaymentTerm" type="xs:string" minOccurs="0"/>
+					<xs:element name="PaymentPeriod" type="xs:duration" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentApplicationSingle" type="agcxml:PaymentApplicationSingle" substitutionGroup="agcxml:PaymentApplication" nillable="true"/>
+	<xs:complexType name="PaymentApplicationSingle">
+		<xs:complexContent>
+			<xs:extension base="agcxml:PaymentApplication">
+				<xs:sequence>
+					<xs:element name="Payment" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="PaymentDate" type="cos:monetaryAmount" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentApplicationRecurring" type="agcxml:PaymentApplicationRecurring" substitutionGroup="agcxml:PaymentApplication" nillable="true"/>
+	<xs:complexType name="PaymentApplicationRecurring">
+		<xs:complexContent>
+			<xs:extension base="agcxml:PaymentApplication">
+				<xs:sequence>
+					<xs:element name="RecurringPayment" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="RecurringPaymentDay" type="xs:gDay" minOccurs="0"/>
+					<xs:element name="RecurringReceiptDay" type="xs:gDay" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentApplicationContract" type="agcxml:PaymentApplicationContract" substitutionGroup="agcxml:PaymentApplication" nillable="true"/>
+	<xs:complexType name="PaymentApplicationContract">
+		<xs:complexContent>
+			<xs:extension base="agcxml:PaymentApplication">
+				<xs:sequence>
+					<xs:element name="PaymentDate" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="OriginalSum" type="cos:monetaryAmount"/>
+					<xs:element name="ChangeByChangeOrder" type="cos:monetaryAmount" minOccurs="0"/>
+					<xs:element name="WorkCompleted" type="xs:float"/>
+					<xs:element name="MaterialStored" type="xs:float"/>
+					<xs:element name="RetainageWorkCompleted" type="xs:float" minOccurs="0"/>
+					<xs:element name="RetainageMaterialStored" type="xs:float" minOccurs="0"/>
+					<xs:element name="PaidPreviously" type="cos:monetaryAmount"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentApplicationContractCertified" type="agcxml:PaymentApplicationContractCertified" substitutionGroup="agcxml:PaymentApplicationContract" nillable="true"/>
+	<xs:complexType name="PaymentApplicationContractCertified">
+		<xs:complexContent>
+			<xs:extension base="agcxml:PaymentApplicationContract">
+				<xs:sequence>
+					<xs:element name="CertifiedAmount" type="cos:monetaryAmount"/>
+					<xs:element name="Explanation" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentDeadline" type="agcxml:PaymentDeadline" substitutionGroup="cos:Payment" nillable="true"/>
+	<xs:complexType name="PaymentDeadline">
+		<xs:complexContent>
+			<xs:extension base="cos:Payment">
+				<xs:sequence>
+					<xs:element name="ElapsingDays" type="xs:unsignedShort" minOccurs="0"/>
+					<xs:element name="RecurringDay" type="xs:gDay" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentRetainage" type="agcxml:PaymentRetainage" substitutionGroup="cos:Payment" nillable="true"/>
+	<xs:complexType name="PaymentRetainage">
+		<xs:complexContent>
+			<xs:extension base="cos:Payment">
+				<xs:sequence>
+					<xs:element name="Retainage" type="cos:ratioMeasure"/>
+					<xs:element name="RetainageLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="RetainageUsage" type="agcxml:RetainageUsage"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaymentInterestRate" type="agcxml:PaymentInterestRate" substitutionGroup="cos:Payment" nillable="true"/>
+	<xs:complexType name="PaymentInterestRate">
+		<xs:complexContent>
+			<xs:extension base="cos:Payment">
+				<xs:sequence>
+					<xs:element name="InterestRate" type="cos:ratioMeasure"/>
+					<xs:element name="RatePeriod" type="xs:normalizedString" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Insurance provision diagram-->
+	<xs:element name="InsuranceProvision" type="agcxml:InsuranceProvision" substitutionGroup="cos:Provision" nillable="true"/>
+	<xs:complexType name="InsuranceProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:Provision"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ContractorInsuranceProvision" type="agcxml:ContractorInsuranceProvision" substitutionGroup="agcxml:InsuranceProvision" nillable="true"/>
+	<xs:complexType name="ContractorInsuranceProvision">
+		<xs:complexContent>
+			<xs:extension base="agcxml:InsuranceProvision">
+				<xs:sequence>
+					<xs:element name="EmployerLiability" type="agcxml:EmployerLiabilityInsurance" minOccurs="0"/>
+					<xs:element name="AutomobileLiability" type="agcxml:AutomobileLiabilityInsurance" minOccurs="0"/>
+					<xs:element name="CommonLiability" type="agcxml:CommonLiabilityInsurance" minOccurs="0"/>
+					<xs:element name="OtherLiabilities" type="agcxml:GeneralLiabilityInsurance" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="BondRequired" type="xs:boolean"/>
+					<xs:element name="DamageIndemnityLimit" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="GeneralInsuranceProvision" type="agcxml:GeneralInsuranceProvision" substitutionGroup="agcxml:InsuranceProvision" nillable="true"/>
+	<xs:complexType name="GeneralInsuranceProvision">
+		<xs:complexContent>
+			<xs:extension base="agcxml:InsuranceProvision">
+				<xs:sequence>
+					<xs:element name="Liabilities" type="agcxml:GeneralLiabilityInsurance" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="GeneralLiabilityInsurance" type="agcxml:GeneralLiabilityInsurance" substitutionGroup="cos:Insurance" nillable="true"/>
+	<xs:complexType name="GeneralLiabilityInsurance">
+		<xs:complexContent>
+			<xs:extension base="cos:Insurance">
+				<xs:sequence>
+					<xs:element name="InsuranceType" type="xs:normalizedString"/>
+					<xs:element name="TotalLiabilityLimit" type="xs:float"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmployerLiabilityInsurance" type="agcxml:EmployerLiabilityInsurance" substitutionGroup="cos:Insurance" nillable="true"/>
+	<xs:complexType name="EmployerLiabilityInsurance">
+		<xs:complexContent>
+			<xs:extension base="cos:Insurance">
+				<xs:sequence>
+					<xs:element name="BodilyInjuryByAccidentPerAccidentLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="BodilyInjuryByDiseasePerEmployeeLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="BodilyInjuryByDiseasePolicyLimit" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AutomobileLiabilityInsurance" type="agcxml:AutomobileLiabilityInsurance" substitutionGroup="cos:Insurance" nillable="true"/>
+	<xs:complexType name="AutomobileLiabilityInsurance">
+		<xs:complexContent>
+			<xs:extension base="cos:Insurance">
+				<xs:sequence>
+					<xs:element name="VehiclePerAccidentLimit" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CommonLiabilityInsurance" type="agcxml:CommonLiabilityInsurance" substitutionGroup="cos:Insurance" nillable="true"/>
+	<xs:complexType name="CommonLiabilityInsurance">
+		<xs:complexContent>
+			<xs:extension base="cos:Insurance">
+				<xs:sequence>
+					<xs:element name="PerOccurrenceLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="GeneralAggregateLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="OperationAggregateLimit" type="xs:float" minOccurs="0"/>
+					<xs:element name="PersonalInjuryLimit" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--General provision diagram-->
+	<xs:element name="ContractProvision" type="agcxml:ContractProvision" substitutionGroup="cos:Provision" nillable="true"/>
+	<xs:complexType name="ContractProvision">
+		<xs:complexContent>
+			<xs:extension base="cos:Provision">
+				<xs:sequence>
+					<xs:element name="AsBuiltDocumentation" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="DesignServiceIncluded" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="PreconstructionServiceIncluded" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="DisputeResolutionProcess" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="LaborRelationTerms" type="xs:string" minOccurs="0"/>
+					<xs:element name="ContractCancellationPeriod" type="xs:duration" minOccurs="0"/>
+					<xs:element name="ContractDisclosureStatement" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Signature diagram-->
+	<xs:element name="Signature" type="agcxml:Signature" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="Signature">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="SignatoryName" type="xs:normalizedString"/>
+					<xs:element name="SignatoryTitle" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="SignatureDate" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SignatureWithWitness" type="agcxml:SignatureWithWitness" substitutionGroup="agcxml:Signature" nillable="true"/>
+	<xs:complexType name="SignatureWithWitness">
+		<xs:complexContent>
+			<xs:extension base="agcxml:Signature">
+				<xs:sequence>
+					<xs:element name="SignatoryWitnessName" type="xs:normalizedString"/>
+					<xs:element name="SignatoryWitnessTitle" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="SignatureWitnessDate" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="License" type="agcxml:License" substitutionGroup="cos:Root" nillable="true"/>
+	<xs:complexType name="License">
+		<xs:complexContent>
+			<xs:extension base="cos:Root">
+				<xs:sequence>
+					<xs:element name="Number" type="xs:normalizedString"/>
+					<xs:element name="JurisdictionTown" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="JurisdictionCounty" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="JurisdictionState" type="xs:normalizedString" minOccurs="0"/>
+					<xs:element name="ExpirationDate" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- Work item schedule diagram -->
+	<xs:element name="WorkItemSchedule" type="agcxml:WorkItemSchedule" substitutionGroup="cos:WorkItem" nillable="true"/>
+	<xs:complexType name="WorkItemSchedule">
+		<xs:complexContent>
+			<xs:extension base="cos:WorkItem">
+				<xs:sequence>
+					<xs:element name="TotalScheduledValue" type="xs:float" minOccurs="0"/>
+					<xs:element name="TotalMaterialValueStored" type="xs:float" minOccurs="0"/>
+					<xs:element name="Items" type="agcxml:WorkItem" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WorkItemScheduleCompleted" type="agcxml:WorkItemScheduleCompleted" substitutionGroup="agcxml:WorkItemSchedule" nillable="true"/>
+	<xs:complexType name="WorkItemScheduleCompleted">
+		<xs:complexContent>
+			<xs:extension base="agcxml:WorkItemSchedule">
+				<xs:sequence>
+					<xs:element name="TotalCompletedValue" type="xs:float" minOccurs="0"/>
+					<xs:element name="TotalCompletedValuePreviously" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WorkItem" type="agcxml:WorkItem" substitutionGroup="cos:WorkItem" nillable="true"/>
+	<xs:complexType name="WorkItem">
+		<xs:complexContent>
+			<xs:extension base="cos:WorkItem">
+				<xs:sequence>
+					<xs:element name="ScheduledValue" type="xs:float"/>
+					<xs:element name="Retainage" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WorkItemCompleted" type="agcxml:WorkItemCompleted" substitutionGroup="agcxml:WorkItem" nillable="true"/>
+	<xs:complexType name="WorkItemCompleted">
+		<xs:complexContent>
+			<xs:extension base="agcxml:WorkItem">
+				<xs:sequence>
+					<xs:element name="CompletedValue" type="xs:float"/>
+					<xs:element name="CompletedValuePreviously" type="xs:float" minOccurs="0"/>
+					<xs:element name="MaterialValueStored" type="xs:float" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Enumeration and data type diagram-->
+	<xs:simpleType name="CostItemUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Included"/>
+			<xs:enumeration value="Excluded"/>
+			<xs:enumeration value="Provision"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CompensationUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="PreconstructionServices"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AllowanceUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Labor"/>
+			<xs:enumeration value="Material"/>
+			<xs:enumeration value="LaborAndMaterial"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetainageUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="General"/>
+			<xs:enumeration value="Additional"/>
+			<xs:enumeration value="MaterialAndEquipment"/>
+			<xs:enumeration value="Subcontractor"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContractDocumentUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ProjectManual"/>
+			<xs:enumeration value="SupplementaryConditions"/>
+			<xs:enumeration value="DrawingList"/>
+			<xs:enumeration value="DrawingNumber"/>
+			<xs:enumeration value="AddendumList"/>
+			<xs:enumeration value="AddendumNumber"/>
+			<xs:enumeration value="SpecificationList"/>
+			<xs:enumeration value="SpecificationSection"/>
+			<xs:enumeration value="OtherDocument"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExhibitUsage">
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Exhibit_A"/>
+			<xs:enumeration value="Exhibit_B"/>
+			<xs:enumeration value="Exhibit_C"/>
+			<xs:enumeration value="Exhibit_D"/>
+			<xs:enumeration value="Exhibit_E"/>
+			<xs:enumeration value="OtherExhibit"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

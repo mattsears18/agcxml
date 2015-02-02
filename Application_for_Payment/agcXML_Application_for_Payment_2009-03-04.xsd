@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2009 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:agcafp="http://www.aecXML.org/agcXML/ApplicationForPayment" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:cos="http://www.aecXML.org/aecXML/cos" targetNamespace="http://www.aecXML.org/agcXML/ApplicationForPayment" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--application for payment diagram-->
+	<xs:element name="ApplicationForPayment" type="agcafp:ApplicationForPayment" substitutionGroup="agcxml:DocumentTransaction" nillable="false"/>
+	<xs:complexType name="ApplicationForPayment">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="AgreementDate" type="xs:date"/>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:group ref="agcafp:SenderChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recipient">
+						<xs:complexType>
+							<xs:group ref="agcafp:RecipientChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee">
+						<xs:complexType>
+							<xs:group ref="agcafp:NotifieeChoice" minOccurs="0"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Project" type="agcxml:Project"/>
+					<xs:element name="ApplicationForPayment" type="agcxml:PaymentApplicationContract"/>
+					<xs:element name="ChangeOrderSummary" type="agcxml:ChangeOrderSummary"/>
+					<xs:element name="ScheduleOfValue" type="agcxml:WorkItemSchedule" minOccurs="0"/>
+					<xs:element name="Attachments" type="agcxml:AttachmentList" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--application for payment actor diagram - Group definition for choice of client and applicant-->
+	<xs:group name="SenderChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Contractor"/>
+			<xs:element ref="agcxml:Subcontractor"/>
+			<xs:element ref="agcxml:ConstructionManagerAdvisor"/>
+			<xs:element ref="agcxml:Engineer"/>
+			<xs:element ref="agcxml:Architect"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="RecipientChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Owner"/>
+			<xs:element ref="agcxml:Contractor"/>
+			<xs:element ref="agcxml:ConstructionManagerAdvisor"/>
+			<xs:element ref="agcxml:Engineer"/>
+			<xs:element ref="agcxml:Architect"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="NotifieeChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Notary"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

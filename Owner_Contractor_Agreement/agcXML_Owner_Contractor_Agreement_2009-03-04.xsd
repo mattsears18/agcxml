@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2007 sp2 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:agcoca="http://www.aecXML.org/agcXML/OwnerContractorAgreement" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:cos="http://www.aecXML.org/aecXML/cos" targetNamespace="http://www.aecXML.org/agcXML/OwnerContractorAgreement" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--Owner contractor agreement diagram-->
+	<xs:element name="OwnerContractorAgreement" type="agcoca:OwnerContractorAgreement" substitutionGroup="agcxml:DocumentTransaction" nillable="false"/>
+	<xs:complexType name="OwnerContractorAgreement">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="AgreementDate" type="xs:date"/>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:group ref="agcoca:SenderChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recipient">
+						<xs:complexType>
+							<xs:group ref="agcoca:RecipientChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee">
+						<xs:complexType>
+							<xs:choice>
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Project" type="agcxml:Project"/>
+					<xs:element name="ProjectMilestone" type="agcxml:ProjectSchedule" minOccurs="0"/>
+					<xs:element name="Price" type="cos:Budget"/>
+					<xs:element name="Payment" type="agcxml:PaymentProvision" minOccurs="0"/>
+					<xs:element name="OwnerInsuranceProvision" type="agcxml:GeneralInsuranceProvision" minOccurs="0"/>
+					<xs:element name="ContractorInsuranceProvision" type="agcxml:ContractorInsuranceProvision" minOccurs="0"/>
+					<xs:element name="ContractProvision" type="agcxml:ContractProvision" minOccurs="0"/>
+					<xs:element name="ContractDocuments" type="agcxml:ContractDocumentList" minOccurs="0"/>
+					<xs:element name="AgreementExhibits" type="agcxml:ExhibitList" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Actor definition diagram-->
+	<xs:group name="SenderChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Owner"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="RecipientChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Contractor"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

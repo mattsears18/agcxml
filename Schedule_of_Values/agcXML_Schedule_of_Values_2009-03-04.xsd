@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2007 sp2 (http://www.altova.com) von Thomas Liebich (AEC3 Deutschland GmbH) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:agcsov="http://www.aecXML.org/agcXML/ScheduleOfValues" xmlns:agcxml="http://www.aecXML.org/agcXML/agcXMLCommon" xmlns:cos="http://www.aecXML.org/aecXML/cos" targetNamespace="http://www.aecXML.org/agcXML/ScheduleOfValues" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.aecXML.org/aecXML/cos" schemaLocation="aecXMLCOS.xsd"/>
+	<xs:import namespace="http://www.aecXML.org/agcXML/agcXMLCommon" schemaLocation="agcXMLCommon.xsd"/>
+	<!--schedule of values diagram-->
+	<xs:element name="ScheduleOfValues" type="agcsov:ScheduleOfValues" substitutionGroup="agcxml:DocumentTransaction" nillable="false"/>
+	<xs:complexType name="ScheduleOfValues">
+		<xs:complexContent>
+			<xs:extension base="agcxml:DocumentTransaction">
+				<xs:sequence>
+					<xs:element name="Sender">
+						<xs:complexType>
+							<xs:group ref="agcsov:SenderChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Recipient">
+						<xs:complexType>
+							<xs:group ref="agcsov:RecipientChoice"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Notifiee">
+						<xs:complexType>
+							<xs:choice>
+								<xs:element ref="agcxml:Organization"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ProjectInformation" type="agcxml:Project"/>
+					<xs:element name="ScheduledWorkItems" type="agcxml:WorkItemSchedule"/>
+					<xs:element name="ApplicationForPayment" type="agcxml:PaymentApplicationSingle" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Actor definition diagram-->
+	<xs:group name="SenderChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Contractor"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="RecipientChoice">
+		<xs:choice>
+			<xs:element ref="agcxml:Owner"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>
